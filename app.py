@@ -85,17 +85,29 @@ m = folium.Map(location=[35.7, 139.7], zoom_start=5)
 for mdata in st.session_state.memories:
     if mdata["lat"] and mdata["lon"]:
 
-        # 👇ここでpopup作る
+        # 画像をbase64化
+        img_html = ""
+        if mdata["image"]:
+            img_b64 = base64.b64encode(mdata["image"]).decode()
+
+            img_html = f"""
+            <br>
+            <img src="data:image/jpeg;base64,{img_b64}"
+                 width="200"
+                 style="border-radius:10px;">
+            """
+
         popup_html = f"""
-        <b>📍場所:</b> {mdata['place']}<br>
-        <b>🍽食べたもの:</b> {mdata['food']}<br>
-        <b>⭐満足度:</b> {mdata['score']}<br>
-        <b>📝メモ:</b> {mdata['memo']}
+        <div style="width:220px">
+            <b>📍場所:</b> {mdata['place']}<br>
+            <b>🍽食べたもの:</b> {mdata['food']}<br>
+            <b>⭐満足度:</b> {mdata['score']}<br>
+            <b>📝メモ:</b> {mdata['memo']}
+            {img_html}
+        </div>
         """
 
         folium.Marker(
             [mdata["lat"], mdata["lon"]],
-            popup=folium.Popup(popup_html, max_width=300, min_width=200)
+            popup=folium.Popup(popup_html, max_width=300)
         ).add_to(m)
-
-st_folium(m)
