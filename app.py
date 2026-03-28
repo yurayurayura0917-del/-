@@ -1,0 +1,92 @@
+import streamlit as st
+import pandas as pd
+from geopy.geocoders import Nominatim
+import folium
+from streamlit_folium import st_folium
+import base64
+from PIL import Image
+import io
+
+geolocator = Nominatim(user_agent="memory_app")
+
+# =====================
+# データ保存（簡易）
+# =====================
+if "memories" not in st.session_state:
+    st.session_state.memories = []
+
+# =====================
+# タイトル
+# =====================
+st.title("📍 ゆらの思い出アプリ")
+
+# =====================
+# 入力
+# =====================
+place = st.text_input("場所")
+food = st.text_input("食べたもの")
+score = st.slider("満足度", 1, 5, 3)
+memo = st.text_input("感想")
+image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
+
+# =====================
+# 地名→座標
+# =====================
+def get_lat_lon(place_name):
+    try:
+        loc = geolocator.geocode(place_name + ", Japan")
+        if loc:
+            return loc.latitude, loc.longitude
+    except:
+        pass
+    return None, None
+
+# =====================
+# 保存
+# =====================
+if st.button("保存"):
+    lat, lon = get_lat_lon(place)
+
+    img_bytes = None
+    if image:
+        img_bytes = image.read()
+
+    st.session_state.memories.append({
+        "place": place,
+        "food": food,
+        "score": score,
+        "memo": memo,
+        "lat": lat,
+        "lon": lon,
+        "image": img_bytes
+    })
+
+    st.success("保存したよ！")
+
+# =====================
+# 一覧
+# =====================
+st.subheader("📚 思い出一覧")
+
+for m in st.session_state.memories[-20:]:
+    st.write(f"📍{m['place']} 🍽{m['food']} ⭐{m['score']}")
+    st.write(m["memo"])
+
+    if m["image"]:
+        st.image(m["image"], width=200)
+
+# =====================
+# 地図
+# =====================
+st.subheader("🗺 地図")
+
+m = folium.Map(location=[35.7, 139.7], zoom_start=5)
+
+for mdata in st.session_state.memories:
+    if mdata["lat"] and mdata["lon"]:
+        folium.Marker(
+            [mdata["lat"], mdata["lon"]],
+            popup=mdata["place"]
+        ).add_to(m)
+
+st_folium(m)
