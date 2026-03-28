@@ -92,24 +92,22 @@ for mdata in st.session_state.memories:
     lat = mdata.get("lat")
     lon = mdata.get("lon")
 
+    # ❗存在チェック（これが最重要）
     if lat is None or lon is None:
         continue
 
-        img_html = ""
-        if mdata["image"]:
-            img_b64 = base64.b64encode(mdata["image"]).decode()
-            img_html = f"""
-            <br>
-            <img src="data:image/jpeg;base64,{img_b64}" width="200">
-            """
+    popup_html = f"""
+    <b>📍場所:</b> {mdata.get('place','')}<br>
+    <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
+    <b>⭐満足度:</b> {mdata.get('score','')}<br>
+    <b>📝メモ:</b> {mdata.get('memo','')}
+    """
 
-        popup_html = f"""
-        <b>📍場所:</b> {mdata['place']}<br>
-        <b>🍽食べたもの:</b> {mdata['food']}<br>
-        <b>⭐満足度:</b> {mdata['score']}<br>
-        <b>📝メモ:</b> {mdata['memo']}
-        {img_html}
-        """
+    folium.Marker(
+        [lat, lon],
+        popup=folium.Popup(popup_html, max_width=300),
+        icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
+    ).add_to(map_obj)
 
         color = "green" if mdata["score"] >= 4 else "orange" if mdata["score"] == 3 else "red"
 
