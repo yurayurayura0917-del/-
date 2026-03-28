@@ -78,36 +78,38 @@ for m in st.session_state.memories[-20:]:
 # =====================
 # 地図
 # =====================
+import base64
+import folium
+from streamlit_folium import st_folium
+
 st.subheader("🗺 地図")
 
-m = folium.Map(location=[35.7, 139.7], zoom_start=5)
+# ★ここで地図を作る（絶対に最初）
+map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
 
 for mdata in st.session_state.memories:
     if mdata["lat"] and mdata["lon"]:
 
-        # 画像をbase64化
         img_html = ""
         if mdata["image"]:
             img_b64 = base64.b64encode(mdata["image"]).decode()
-
             img_html = f"""
             <br>
-            <img src="data:image/jpeg;base64,{img_b64}"
-                 width="200"
-                 style="border-radius:10px;">
+            <img src="data:image/jpeg;base64,{img_b64}" width="200">
             """
 
         popup_html = f"""
-        <div style="width:220px">
-            <b>📍場所:</b> {mdata['place']}<br>
-            <b>🍽食べたもの:</b> {mdata['food']}<br>
-            <b>⭐満足度:</b> {mdata['score']}<br>
-            <b>📝メモ:</b> {mdata['memo']}
-            {img_html}
-        </div>
+        <b>📍場所:</b> {mdata['place']}<br>
+        <b>🍽食べたもの:</b> {mdata['food']}<br>
+        <b>⭐満足度:</b> {mdata['score']}<br>
+        <b>📝メモ:</b> {mdata['memo']}
+        {img_html}
         """
 
         folium.Marker(
             [mdata["lat"], mdata["lon"]],
             popup=folium.Popup(popup_html, max_width=300)
-        ).add_to(m)
+        ).add_to(map_obj)
+
+# ★最後に表示
+st_folium(map_obj)
