@@ -103,12 +103,6 @@ for mdata in st.session_state.memories:
     <b>📝メモ:</b> {mdata.get('memo','')}
     """
 
-    folium.Marker(
-        [lat, lon],
-        popup=folium.Popup(popup_html, max_width=300),
-        icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
-    ).add_to(map_obj)
-
         color = "green" if mdata["score"] >= 4 else "orange" if mdata["score"] == 3 else "red"
 
 folium.Marker(
