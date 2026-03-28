@@ -69,8 +69,8 @@ if st.button("保存"):
 st.subheader("📚 思い出一覧")
 
 for m in st.session_state.memories[-20:]:
-    st.write(f"📍{m['place']} 🍽{m['food']} ⭐{m['score']}")
-    st.write(m["memo"])
+    st.write(f"📍 {m['place']}　🍽 {m['food']}　⭐ {m['score']}")
+    st.write(f"📝 {m['memo']}")
 
     if m["image"]:
         st.image(m["image"], width=200)
@@ -84,9 +84,18 @@ m = folium.Map(location=[35.7, 139.7], zoom_start=5)
 
 for mdata in st.session_state.memories:
     if mdata["lat"] and mdata["lon"]:
+
+        # 👇ここでpopup作る
+        popup_html = f"""
+        <b>📍場所:</b> {mdata['place']}<br>
+        <b>🍽食べたもの:</b> {mdata['food']}<br>
+        <b>⭐満足度:</b> {mdata['score']}<br>
+        <b>📝メモ:</b> {mdata['memo']}
+        """
+
         folium.Marker(
             [mdata["lat"], mdata["lon"]],
-            popup=mdata["place"]
+            popup=folium.Popup(popup_html, max_width=300, min_width=200)
         ).add_to(m)
 
 st_folium(m)
