@@ -106,10 +106,13 @@ for mdata in st.session_state.memories:
         {img_html}
         """
 
-        folium.Marker(
-            [mdata["lat"], mdata["lon"]],
-            popup=folium.Popup(popup_html, max_width=300)
-        ).add_to(map_obj)
+        color = "green" if mdata["score"] >= 4 else "orange" if mdata["score"] == 3 else "red"
+
+folium.Marker(
+    [mdata["lat"], mdata["lon"]],
+    popup=folium.Popup(popup_html, max_width=300),
+    icon=folium.Icon(color=color, icon="map-marker", prefix="fa")
+).add_to(map_obj)
 
 # ★最後に表示
 st_folium(map_obj)
