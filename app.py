@@ -88,10 +88,12 @@ st.subheader("🗺 地図")
 map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
 
 for mdata in st.session_state.memories:
-   lat = mdata.get("lat")
-   lon = mdata.get("lon")
 
-if lat is not None and lon is not None:
+    lat = mdata.get("lat")
+    lon = mdata.get("lon")
+
+    if lat is None or lon is None:
+        continue
 
         img_html = ""
         if mdata["image"]:
