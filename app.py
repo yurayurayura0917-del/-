@@ -108,6 +108,12 @@ for mdata in st.session_state.memories:
     if lat is None or lon is None:
         continue
 
+img_html = ""
+if mdata["image"]:
+     img_b64 = base64.b64encode(mdata["image"]).decode()
+     img_html = f'<br><img src="data:image/png;base64,{img_b64}" width="150">'
+
+
     popup_html = f"""
     <b>📍場所:</b> {mdata.get('place','')}<br>
     <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
