@@ -69,8 +69,19 @@ if st.button("保存"):
 st.subheader("📚 思い出一覧")
 
 for m in st.session_state.memories[-20:]:
-    st.write(f"📍 {m['place']}　🍽 {m['food']}　⭐ {m['score']}")
-    st.write(f"📝 {m['memo']}")
+st.markdown(f"""
+<div style="
+    background:#ffffff;
+    padding:15px;
+    margin:10px 0;
+    border-radius:12px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+">
+    <h4>📍 {m['place']}</h4>
+    <p>🍽 {m['food']}　⭐ {m['score']}</p>
+    <p>📝 {m['memo']}</p>
+</div>
+""", unsafe_allow_html=True)
 
     if m["image"]:
         st.image(m["image"], width=200)
