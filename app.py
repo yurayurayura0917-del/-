@@ -96,7 +96,6 @@ from streamlit_folium import st_folium
 
 st.subheader("🗺 地図")
 
-# ★ここで地図を作る（絶対に最初）
 map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
 
 for mdata in st.session_state.memories:
@@ -104,21 +103,25 @@ for mdata in st.session_state.memories:
     lat = mdata.get("lat")
     lon = mdata.get("lon")
 
-    # ❗存在チェック（これが最重要）
     if lat is None or lon is None:
         continue
 
-img_html = ""
-if mdata["image"]:
-     img_b64 = base64.b64encode(mdata["image"]).decode()
-     img_html = f'<br><img src="data:image/png;base64,{img_b64}" width="150">'
-
+    img_html = ""
+    if mdata.get("image"):
+        img_b64 = base64.b64encode(mdata["image"]).decode()
+        img_html = f"""
+        <br>
+        <img src="data:image/jpeg;base64,{img_b64}" width="200">
+        """
 
     popup_html = f"""
-    <b>📍場所:</b> {mdata.get('place','')}<br>
-    <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
-    <b>⭐満足度:</b> {mdata.get('score','')}<br>
-    <b>📝メモ:</b> {mdata.get('memo','')}
+    <div style="width:220px">
+        <b>📍場所:</b> {mdata.get('place','')}<br>
+        <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
+        <b>⭐満足度:</b> {mdata.get('score','')}<br>
+        <b>📝メモ:</b> {mdata.get('memo','')}
+        {img_html}
+    </div>
     """
 
     folium.Marker(
@@ -127,5 +130,4 @@ if mdata["image"]:
         icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
     ).add_to(map_obj)
 
-# ★最後に表示
 st_folium(map_obj)
