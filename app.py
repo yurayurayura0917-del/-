@@ -62,6 +62,8 @@ if "liked" not in st.session_state:
 # =====================
 # 入力
 # =====================
+search = st.text_input("🔍 検索（場所・メモ・食べ物）")
+
 col1, col2 = st.columns([1, 2])
 
 with col1:
@@ -77,13 +79,14 @@ with col1:
     if candidates:
         options = [loc.address for loc in candidates]
         selected = st.selectbox("候補から選択", options)
-    
+
     food = st.text_input("食べたもの")
     score = st.slider("満足度", 1, 5, 3)
     memo = st.text_input("感想")
-    image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
+    image = st.file_uploader("写真")
 
     if st.button("保存"):
+        # 保存処理
 
 # =====================
 # 地名→座標
@@ -135,8 +138,6 @@ if st.button("保存"):
     save_data()
     
     st.success("保存したよ！")
-
-search = st.text_input("🔍 検索（場所・メモ・食べ物）")
 
 st.subheader("🔥 人気ランキング")
 
