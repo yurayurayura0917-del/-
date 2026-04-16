@@ -177,14 +177,17 @@ for i, m in enumerate(sorted_memories):
         <div style="font-size:18px; font-weight:bold;">
             📍 {m['place']}
         </div>
+
         <div style="margin-top:5px; color:#555;">
             🍽 {m['food']}　⭐ {m['score']}
         </div>
+
         <div style="margin-top:8px; font-size:14px;">
             📝 {m['memo']}
-        
-            {img_html}
         </div>
+
+        {img_html}
+
     </div>
     """, unsafe_allow_html=True)
     
