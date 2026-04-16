@@ -159,27 +159,16 @@ filtered = [
 for i, m in enumerate(filtered):
 
     # 🟦カード（情報）
-    st.markdown(f"""
-    <div style="
-        background:#ffffff;
-        padding:18px;
-        margin:15px 0;
-        border-radius:16px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
-        <div style="font-size:18px; font-weight:bold;">
-            📍 {m['place']}
-        </div>
-
-        <div style="margin-top:5px; color:#555;">
-            🍽 {m['food']}　⭐ {m['score']}
-        </div>
-
-        <div style="margin-top:8px; font-size:14px;">
-            📝 {m['memo']}
-        </div>
+    st.markdown(
+        f"""
+    <div style="background:#ffffff;padding:18px;margin:15px 0;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+    📍 {m['place']}<br>
+    🍽 {m['food']}　⭐ {m['score']}<br>
+    📝 {m['memo']}<br>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True
+    )
 
     # 🟦画像
     if m.get("image"):
