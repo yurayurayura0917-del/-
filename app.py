@@ -171,7 +171,7 @@ for i, m in enumerate(sorted_memories):
     # 🟦画像
     if m["image"]:
         img_bytes = base64.b64decode(m["image"])
-        st.image(img_bytes, width=200)
+        st.image(img_bytes, use_container_width=True)
 
     # 🟦ボタン（下に配置）
     col1, col2 = st.columns([1, 4])
