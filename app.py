@@ -62,7 +62,6 @@ food = st.text_input("食べたもの")
 score = st.slider("満足度", 1, 5, 3)
 memo = st.text_input("感想")
 image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
-favorite = st.checkbox("❤️ お気に入り")
 
 # =====================
 # 地名→座標
@@ -105,7 +104,7 @@ if st.button("保存"):
         "lat": lat,
         "lon": lon,
         "image": img_base64,
-        "favorite": favorite
+        "likes": 0
     })
     
     save_data()
@@ -146,18 +145,18 @@ for i, m in enumerate(reversed(filtered)):
         img_bytes = base64.b64decode(m["image"])
         st.image(img_bytes, width=200)
 
-    if m.get("favorite"):
-        st.write("❤️ お気に入り")
+    col1, col2 = st.columns([1, 4])
+
+    with col1:
+        if st.button(f"❤️ {m.get('likes',0)}", key=f"like{i}"):
+            m["likes"] = m.get("likes", 0) + 1
+            save_data()
+            st.rerun()
 
     if st.button(f"削除{i}"):
         st.session_state.memories.remove(m)
         save_data()
         st.rerun()
-
-show_fav = st.checkbox("お気に入りだけ表示")
-
-if show_fav:
-    filtered = [m for m in filtered if m.get("favorite")]
 
 # =====================
 # 地図
