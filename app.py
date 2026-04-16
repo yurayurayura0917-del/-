@@ -180,15 +180,15 @@ for i, m in enumerate(sorted_memories):
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        if st.button(f"❤️ {m.get('likes',0)}", key=f"like{i}"):
+        if st.button(f"❤️ {m.get('likes',0)}", key=f"like_{m['id']}"):
             m["likes"] = m.get("likes", 0) + 1
             save_data()
             st.rerun()
 
-    if st.button(f"削除{i}"):
-        st.session_state.memories.remove(m)
-        save_data()
-        st.rerun()
+        if st.button(f"削除{i}", key=f"delete_{m['id']}"):
+            st.session_state.memories.remove(m)
+            save_data()
+            st.rerun()
 
 # =====================
 # 地図
