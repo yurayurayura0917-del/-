@@ -156,6 +156,14 @@ filtered = [
 
 for i, m in enumerate(sorted_memories):
 
+    # ⭐②ここに入れる（カードの前）
+    if m["image"]:
+        img_bytes = base64.b64decode(m["image"])
+        img_base64 = base64.b64encode(img_bytes).decode()
+        img_html = f'<img src="data:image/png;base64,{img_base64}" style="width:100%; border-radius:12px; margin-top:10px;">'
+    else:
+        img_html = ""
+
     # 🟦カード（情報）
     st.markdown(f"""
     <div style="
@@ -176,15 +184,6 @@ for i, m in enumerate(sorted_memories):
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-    if m["image"]:
-        img_bytes = base64.b64decode(m["image"])
-        img_base64 = base64.b64encode(img_bytes).decode()
-        img_html = f'<img src="data:image/png;base64,{img_base64}" style="width:100%; border-radius:12px; margin-top:10px;">'
-    else:
-        img_html = ""
-
-    {img_html}
     
     # 🟦ボタン（下に配置）
     liked = m["id"] in st.session_state.liked
