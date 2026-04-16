@@ -182,6 +182,9 @@ for i, m in enumerate(sorted_memories):
         <div style="margin-top:8px; font-size:14px;">
             📝 {m['memo']}
         </div>
+
+        {img_html}
+        
     </div>
     """, unsafe_allow_html=True)
     
