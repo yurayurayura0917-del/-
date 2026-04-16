@@ -186,12 +186,7 @@ for i, m in enumerate(filtered):
     """,
         unsafe_allow_html=True
     )
-
-    # 🟦画像
-    if m.get("image"):
-        img_bytes = base64.b64decode(m["image"])
-        st.image(img_bytes, use_container_width=True)
-
+        
     # 🟦ボタン
     col1, col2 = st.columns([1, 4])
 
