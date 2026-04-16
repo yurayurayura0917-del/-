@@ -110,12 +110,21 @@ if st.button("保存"):
     
     st.success("保存したよ！")
 
+search = st.text_input("🔍 検索（場所・メモ・食べ物）")
+
 # =====================
 # 一覧
 # =====================
 st.subheader("📚 思い出一覧")
 
-for i, m in enumerate(st.session_state.memories):
+filtered = [
+    m for m in st.session_state.memories
+    if search.lower() in m["place"].lower()
+    or search.lower() in m["memo"].lower()
+    or search.lower() in m["food"].lower()
+]
+
+for i, m in enumerate(reversed(filtered)):
 
     st.markdown(f"""
     <div style="
@@ -136,9 +145,9 @@ for i, m in enumerate(st.session_state.memories):
         st.image(img_bytes, width=200)
 
     if st.button(f"削除{i}"):
-        st.session_state.memories.pop(i)
-        save_data()
-        st.rerun()
+    st.session_state.memories.remove(m)
+    save_data()
+    st.rerun()
 
 # =====================
 # 地図
