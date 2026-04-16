@@ -104,8 +104,8 @@ if st.button("保存"):
         "memo": memo,
         "lat": lat,
         "lon": lon,
-        "image": img_base64
-        "favorite": favorite,
+        "image": img_base64,
+        "favorite": favorite
     })
     
     save_data()
