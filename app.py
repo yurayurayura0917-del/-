@@ -172,17 +172,45 @@ else:
         or search.lower() in m["food"].lower()
     ]
 
-    for i, m in enumerate(filtered):
+    for m in filtered:
 
-        card_html = f"""
-    <div style="background:white;padding:18px;margin:15px 0;border-radius:16px;">
-        <div>📍 {m['place']}</div>
-        <div>🍽 {m['food']} ⭐ {m['score']}</div>
-        <div>📝 {m['memo']}</div>
-    </div>
-    """
+    # 画像
+    img_html = ""
+    if m.get("image"):
+        img_html = f"""
+        <img src="data:image/png;base64,{m['image']}"
+        style="width:100%; border-radius:12px; margin-bottom:8px;">
+        """
 
-        st.markdown(card_html, unsafe_allow_html=True)
+    # カード
+    st.markdown(
+        f"""
+        <div style="
+            background:#fff;
+            padding:18px;
+            margin:15px 0;
+            border-radius:16px;
+            box-shadow:0 2px 6px rgba(0,0,0,0.08);
+        ">
+
+            {img_html}
+
+            <div style="font-size:18px; font-weight:bold;">
+                📍 {m['place']}
+            </div>
+
+            <div style="color:#666; font-size:13px;">
+                🍽 {m['food']}　⭐ {m['score']}
+            </div>
+
+            <div style="margin-top:6px; font-size:13px;">
+                📝 {m['memo']}
+            </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
         col1, col2 = st.columns([1, 4])
 
