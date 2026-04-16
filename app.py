@@ -174,6 +174,14 @@ else:
 
     for i, m in enumerate(filtered):
 
+        card_html = f"""
+    <div style="background:white;padding:18px;margin:15px 0;border-radius:16px;">
+        <div>📍 {m['place']}</div>
+        <div>🍽 {m['food']} ⭐ {m['score']}</div>
+        <div>📝 {m['memo']}</div>
+    </div>
+    """
+
         st.markdown(card_html, unsafe_allow_html=True)
 
         col1, col2 = st.columns([1, 4])
