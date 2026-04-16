@@ -158,10 +158,6 @@ if st.session_state.page == "add":
         st.rerun()
 
 # 地図
-import base64
-import folium
-from streamlit_folium import st_folium
-
 elif st.session_state.page == "map":
     st.subheader("🗺 地図")
 
