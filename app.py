@@ -113,6 +113,8 @@ if st.button("保存"):
         img_bytes = image.read()
         img_base64 = base64.b64encode(img_bytes).decode()
 
+        m["image"] = img_base64
+
     st.session_state.memories.append({
         "id": str(uuid.uuid4()),
         "place": place,
