@@ -88,7 +88,7 @@ with col3:
 # =====================
 # 入力
 # =====================
-elif st.session_state.page == "add":
+if st.session_state.page == "add":
     st.subheader("📍 思い出を追加")
 
     query = st.text_input("場所")
