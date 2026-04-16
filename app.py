@@ -29,10 +29,6 @@ def get_place_candidates(query):
 import os
 
 if "memories" not in st.session_state:
-    for m in st.session_state.memories:
-        if "id" not in m:
-            m["id"] = str(uuid.uuid4())
-            
     if os.path.exists("memories.json"):
         try:
             with open("memories.json", "r") as f:
@@ -41,6 +37,10 @@ if "memories" not in st.session_state:
             st.session_state.memories = []
     else:
         st.session_state.memories = []
+
+for m in st.session_state.memories:
+    if "id" not in m:
+        m["id"] = str(uuid.uuid4())
         
 # =====================
 # タイトル
