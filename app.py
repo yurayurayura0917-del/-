@@ -70,6 +70,21 @@ st.title("📍 おいしいお店保存するアプリ")
 
 st.markdown("""
 <style>
+.block-container {
+    padding-top: 1rem;
+}
+h1 {
+    margin-bottom: 10px;
+}
+div.stButton {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
 
 /* 下ナビバー */
 .bottom-nav {
