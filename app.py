@@ -157,10 +157,13 @@ filtered = [
 for i, m in enumerate(sorted_memories):
 
     # ⭐②ここに入れる（カードの前）
+    img_html = ""
+
     if m["image"]:
-        img_html = f'<img src="data:image/png;base64,{m["image"]}" style="width:100%; border-radius:12px; margin-top:10px;">'
-    else:
-        img_html = ""
+        img_html = f"""
+        <img src="data:image/png;base64,{m['image']}"
+        style="width:100%; border-radius:12px; margin-top:10px;">
+        """
     
     # 🟦カード（情報）
     st.markdown(f"""
@@ -179,10 +182,9 @@ for i, m in enumerate(sorted_memories):
         </div>
         <div style="margin-top:8px; font-size:14px;">
             📝 {m['memo']}
-        </div>
-
-        {img_html}
         
+            {img_html}
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
