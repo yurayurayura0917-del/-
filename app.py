@@ -128,26 +128,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-.plus-btn {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    z-index: 999;
-}
-</style>
-""", unsafe_allow_html=True)
-
-col_plus = st.container()
-
-with col_plus:
-    st.markdown('<div class="plus-btn">', unsafe_allow_html=True)
-    if st.button("＋", key="plus"):
-        st.session_state.page = "add"
-        st.rerun()
-    st.markdown('</div>', unsafe_allow_html=True)
-
 col1, col2 = st.columns(2)
 
 with col1:
