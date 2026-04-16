@@ -68,15 +68,15 @@ for m in st.session_state.memories:
 # =====================
 st.title("📍 おいしいお店保存するアプリ")
 
-col1, col2, col3 = st.columns([1, 1, 8])
+col1, col2, spacer, col3 = st.columns([1, 1, 6, 1])
 
 with col1:
-    if st.button("📚 一覧"):
+    if st.button("📚"):
         st.session_state.page = "home"
         st.rerun()
 
 with col2:
-    if st.button("🗺 地図"):
+    if st.button("🗺"):
         st.session_state.page = "map"
         st.rerun()
 
