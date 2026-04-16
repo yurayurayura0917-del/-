@@ -151,14 +151,20 @@ for i, m in enumerate(sorted_memories):
     st.markdown(f"""
     <div style="
         background:#ffffff;
-        padding:15px;
-        margin:10px 0;
-        border-radius:12px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.1);
+        padding:18px;
+        margin:15px 0;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.08);
     ">
-        <h4>📍 {m['place']}</h4>
-        <p>🍽 {m['food']}　⭐ {m['score']}</p>
-        <p>📝 {m['memo']}</p>
+        <div style="font-size:18px; font-weight:bold;">
+            📍 {m['place']}
+        </div>
+        <div style="margin-top:5px; color:#555;">
+            🍽 {m['food']}　⭐ {m['score']}
+        </div>
+        <div style="margin-top:8px; font-size:14px;">
+            📝 {m['memo']}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
