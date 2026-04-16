@@ -177,11 +177,15 @@ for i, m in enumerate(sorted_memories):
     </div>
     """, unsafe_allow_html=True)
 
-    # 🟦画像
     if m["image"]:
         img_bytes = base64.b64decode(m["image"])
-        st.image(img_bytes, use_container_width=True)
+        img_base64 = base64.b64encode(img_bytes).decode()
+        img_html = f'<img src="data:image/png;base64,{img_base64}" style="width:100%; border-radius:12px; margin-top:10px;">'
+    else:
+        img_html = ""
 
+    {img_html}
+    
     # 🟦ボタン（下に配置）
     liked = m["id"] in st.session_state.liked
 
