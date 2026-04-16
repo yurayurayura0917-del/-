@@ -149,53 +149,37 @@ for i, m in enumerate(sorted_memories):
 
     st.markdown("カード")
 
-    liked = i in st.session_state.liked
-
-    if st.button(
-        f"{'💔' if liked else '❤️'} {m.get('likes',0)}",
-        key=f"like{i}"
-    ):
-        if liked:
-            m["likes"] = max(0, m["likes"] - 1)
-            st.session_state.liked.remove(i)
-        else:
-            m["likes"] = m.get("likes", 0) + 1
-            st.session_state.liked.add(i)
-
-        save_data()
-        st.rerun()
-
-    st.markdown(f"""
-    <div style="
-        background:#ffffff;
-        padding:15px;
-        margin:10px 0;
-        border-radius:12px;
-        box-shadow:0 2px 6px rgba(0,0,0,0.1);
-    ">
-        <h4>📍 {m['place']}</h4>
-        <p>🍽 {m['food']}　⭐ {m['score']}</p>
-        <p>📝 {m['memo']}</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
+    # 画像表示
     if m["image"]:
         img_bytes = base64.b64decode(m["image"])
         st.image(img_bytes, width=200)
 
+    # 👇ここに移動！！
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        if st.button(f"❤️ {m.get('likes',0)}", key=f"like_{m['id']}"):
-            m["likes"] = m.get("likes", 0) + 1
+        liked = m["id"] in st.session_state.liked
+
+        if st.button(
+            f"{'💔' if liked else '❤️'} {m.get('likes',0)}",
+            key=f"like_{m['id']}"
+        ):
+            if liked:
+                m["likes"] = max(0, m["likes"] - 1)
+                st.session_state.liked.remove(m["id"])
+            else:
+                m["likes"] = m.get("likes", 0) + 1
+                st.session_state.liked.add(m["id"])
+
             save_data()
             st.rerun()
 
+    with col2:
         if st.button(f"削除{i}", key=f"delete_{m['id']}"):
             st.session_state.memories.remove(m)
             save_data()
             st.rerun()
-
+            
 # =====================
 # 地図
 # =====================
