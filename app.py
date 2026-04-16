@@ -154,7 +154,7 @@ filtered = [
     or search.lower() in m["food"].lower()
 ]
 
-for i, m in enumerate(sorted_memories):
+for i, m in enumerate(filtered):
 
     # ⭐②ここに入れる（カードの前）
     img_html = ""
