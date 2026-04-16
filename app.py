@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import os
 import pandas as pd
 from geopy.geocoders import Nominatim
 import folium
@@ -9,11 +11,19 @@ import io
 
 geolocator = Nominatim(user_agent="memory_app")
 
+def save_data():
+    with open("memories.json", "w") as f:
+        json.dump(st.session_state.memories, f)
+
 # =====================
 # データ保存（簡易）
 # =====================
 if "memories" not in st.session_state:
-    st.session_state.memories = []
+    if os.path.exists("memories.json"):
+        with open("memories.json", "r") as f:
+            st.session_state.memories = json.load(f)
+    else:
+        st.session_state.memories = []
 
 # =====================
 # タイトル
@@ -60,7 +70,9 @@ if st.button("保存"):
         "lon": lon,
         "image": img_bytes
     })
-
+    
+    save_data()
+    
     st.success("保存したよ！")
 
 # =====================
@@ -86,6 +98,15 @@ for m in st.session_state.memories:
 
     if m["image"]:
         st.image(m["image"], width=200)
+
+    for i, m in enumerate(st.session_state.memories):
+
+    st.markdown(f"📍 {m['place']}")
+
+    if st.button(f"削除{i}"):
+        st.session_state.memories.pop(i)
+        save_data()
+        st.rerun()
 
 # =====================
 # 地図
