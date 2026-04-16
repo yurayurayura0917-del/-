@@ -38,7 +38,19 @@ st.title("📍 ゆらの思い出アプリ")
 # =====================
 # 入力
 # =====================
-place = st.text_input("場所")
+query = st.text_input("場所（店名OK）")
+
+candidates = []
+selected = None
+
+if query:
+    candidates = get_place_candidates(query)
+
+options = []
+if candidates:
+    options = [loc.address for loc in candidates]
+    selected = st.selectbox("候補から選択", options)
+    
 food = st.text_input("食べたもの")
 score = st.slider("満足度", 1, 5, 3)
 memo = st.text_input("感想")
@@ -56,12 +68,28 @@ def get_lat_lon(place_name):
         pass
     return None, None
 
+def get_place_candidates(query):
+    try:
+        locations = geolocator.geocode(query + ", Japan", exactly_one=False, limit=5)
+        return locations
+    except:
+        return []
+
 # =====================
 # 保存
 # =====================
 if st.button("保存"):
-    lat, lon = get_lat_lon(place)
+    lat, lon = None, None
+    place = query  # デフォルト
 
+    if candidates and selected:
+        for loc in candidates:
+            if loc.address == selected:
+                lat = loc.latitude
+                lon = loc.longitude
+                place = selected  # ←選んだ住所を保存
+                break
+                
     img_bytes = None
     
     if image:
