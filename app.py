@@ -69,14 +69,59 @@ for m in st.session_state.memories:
 st.title("📍 おいしいお店保存するアプリ")
 
 st.markdown("""
-    <style>
-    button[kind="secondary"] {
-        border-radius: 50%;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
 
-col1, col2, col3 = st.columns([1, 1, 8])
+/* 下ナビバー */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+}
+
+/* ナビボタン */
+.bottom-nav button {
+    font-size: 18px;
+}
+
+/* 右上＋ボタン */
+.top-plus {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.top-plus button {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="top-plus">', unsafe_allow_html=True)
+
+if st.button("＋"):
+    st.session_state.page = "add"
+    st.rerun()
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="bottom-nav">', unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
 
 with col1:
     if st.button("📚"):
@@ -88,10 +133,7 @@ with col2:
         st.session_state.page = "map"
         st.rerun()
 
-with col3:
-    if st.button("＋"):
-        st.session_state.page = "add"
-        st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================
 # 入力
