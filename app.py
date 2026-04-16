@@ -163,7 +163,7 @@ import base64
 import folium
 from streamlit_folium import st_folium
 
-elif st.session_stage.page == "map":
+elif st.session_state.page == "map":
     st.subheader("🗺 地図")
 
     map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
