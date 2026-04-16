@@ -71,20 +71,23 @@ st.title("📍 おいしいお店保存するアプリ")
 st.markdown("""
 <style>
 .plus-btn {
-    position: absolute;
-    top: 70px;
+    position: fixed;
+    top: 80px;
     left: 20px;
     z-index: 999;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="plus-btn">', unsafe_allow_html=True)
-if st.button("＋"):
-    st.session_state.page = "add"
-    st.rerun()
-st.markdown('</div>', unsafe_allow_html=True)
+placeholder = st.empty()
 
+with placeholder:
+    st.markdown('<div class="plus-btn">', unsafe_allow_html=True)
+    if st.button("＋", key="plus"):
+        st.session_state.page = "add"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+    
 st.markdown("""
 <style>
 
