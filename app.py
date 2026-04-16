@@ -45,7 +45,7 @@ st.title("📍 ゆらの思い出アプリ")
 # =====================
 # 入力
 # =====================
-query = st.text_input("場所（店名OK）")
+query = st.text_input("場所")
 
 candidates = []
 selected = None
@@ -62,6 +62,7 @@ food = st.text_input("食べたもの")
 score = st.slider("満足度", 1, 5, 3)
 memo = st.text_input("感想")
 image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
+favorite = st.checkbox("❤️ お気に入り")
 
 # =====================
 # 地名→座標
@@ -104,6 +105,7 @@ if st.button("保存"):
         "lat": lat,
         "lon": lon,
         "image": img_base64
+        "favorite": favorite,
     })
     
     save_data()
@@ -144,10 +146,18 @@ for i, m in enumerate(reversed(filtered)):
         img_bytes = base64.b64decode(m["image"])
         st.image(img_bytes, width=200)
 
+    if m.get("favorite"):
+        st.write("❤️ お気に入り")
+
     if st.button(f"削除{i}"):
         st.session_state.memories.remove(m)
         save_data()
         st.rerun()
+
+show_fav = st.checkbox("お気に入りだけ表示")
+
+if show_fav:
+    filtered = [m for m in filtered if m.get("favorite")]
 
 # =====================
 # 地図
