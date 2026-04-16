@@ -10,6 +10,9 @@ from PIL import Image
 import io
 import uuid
 
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
 geolocator = Nominatim(user_agent="memory_app")
 
 def save_data():
@@ -68,14 +71,20 @@ st.title("📍 おいしいお店保存するアプリ")
 if "liked" not in st.session_state:
     st.session_state.liked = set()
 
+col1, col2, col3 = st.columns([1, 8, 1])
+
+with col3:
+    if st.button("＋"):
+        st.session_state.page = "add"
+        st.rerun()
+
 # =====================
 # 入力
 # =====================
-search = st.text_input("🔍 検索（場所・メモ・食べ物）")
+if st.session_state.page == "add":
 
-col1, col2 = st.columns([1, 2])
+    st.subheader("📍 思い出を追加")
 
-with col1:
     query = st.text_input("場所")
 
     candidates = []
@@ -96,23 +105,20 @@ with col1:
 
     if st.button("保存"):
         lat, lon = None, None
-        place = query  # デフォルト
+        place = query
 
         if candidates and selected:
             for loc in candidates:
                 if loc.address == selected:
                     lat = loc.latitude
                     lon = loc.longitude
-                    place = selected  # ←選んだ住所を保存
+                    place = selected
                     break
-                
-        img_bytes = None
-    
+
+        img_base64 = None
         if image:
             img_bytes = image.read()
             img_base64 = base64.b64encode(img_bytes).decode()
-
-            m["image"] = img_base64
 
         st.session_state.memories.append({
             "id": str(uuid.uuid4()),
@@ -125,10 +131,17 @@ with col1:
             "image": img_base64,
             "likes": 0
         })
-    
+
         save_data()
-    
         st.success("保存したよ！")
+        st.session_state.page = "home"
+        st.rerun()
+
+    if st.button("戻る"):
+        st.session_state.page = "home"
+        st.rerun()
+
+else:
 
     st.subheader("🔥 人気ランキング")
 
@@ -141,10 +154,7 @@ with col1:
     for m in sorted_memories[:3]:
         st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
 
-# =====================
-# 一覧
-# =====================
-with col2:
+    # 一覧
     st.subheader("📚 思い出一覧")
 
     filtered = [
@@ -156,94 +166,61 @@ with col2:
 
     for i, m in enumerate(filtered):
 
-        # 🟦カード（情報）
-        st.markdown(
-            f"""
-        <div style="
-            background:#fff;
-            border-radius:14px;
-            margin:10px 0;
-            overflow:hidden;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        ">
+        st.markdown(... ←今のカードそのまま)
 
-        <img src="data:image/png;base64,{m['image']}"
-        style="width:100%; display:block;">
-
-        <div style="padding:10px 12px;">
-            <div style="font-weight:bold;">📍 {m['place']}</div>
-            <div style="font-size:13px; color:#666;">
-                🍽 {m['food']}　⭐ {m['score']}
-            </div>
-            <div style="font-size:13px; margin-top:4px;">
-                {m['memo']}
-            </div>
-        </div>
-
-        </div>
-        """,
-            unsafe_allow_html=True
-        )
-        
-        # 🟦ボタン
         col1, col2 = st.columns([1, 4])
 
         with col1:
-            if st.button(
-                f"❤️ {m.get('likes', 0)}",
-                key=f"like_{m.get('id', i)}"
-            ):
-                m["likes"] = m.get("likes", 0) + 1
+            if st.button(f"❤️ {m.get('likes',0)}", key=f"like_{m['id']}"):
+                m["likes"] += 1
                 save_data()
                 st.rerun()
 
         with col2:
-            if st.button("🗑", key=f"delete_{m.get('id', i)}"):
+            if st.button("🗑", key=f"delete_{m['id']}"):
                 st.session_state.memories.remove(m)
                 save_data()
                 st.rerun()
-            
-# =====================
-# 地図
-# =====================
-import base64
-import folium
-from streamlit_folium import st_folium
 
-st.subheader("🗺 地図")
+    # 地図
+    import base64
+    import folium
+    from streamlit_folium import st_folium
 
-map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
+    st.subheader("🗺 地図")
 
-for mdata in st.session_state.memories:
+    map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
 
-    lat = mdata.get("lat")
-    lon = mdata.get("lon")
+    for mdata in st.session_state.memories:
 
-    if lat is None or lon is None:
-        continue
+        lat = mdata.get("lat")
+        lon = mdata.get("lon")
 
-    img_html = ""
-    if mdata.get("image"):
-        img_b64 = mdata["image"]
-        img_html = f"""
-        <br>
-        <img src="data:image/jpeg;base64,{img_b64}" width="200">
+        if lat is None or lon is None:
+            continue
+
+        img_html = ""
+        if mdata.get("image"):
+            img_b64 = mdata["image"]
+            img_html = f"""
+            <br>
+            <img src="data:image/jpeg;base64,{img_b64}" width="200">
+            """
+
+        popup_html = f"""
+        <div style="width:220px">
+            <b>📍場所:</b> {mdata.get('place','')}<br>
+            <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
+            <b>⭐満足度:</b> {mdata.get('score','')}<br>
+            <b>📝メモ:</b> {mdata.get('memo','')}
+            {img_html}
+        </div>
         """
 
-    popup_html = f"""
-    <div style="width:220px">
-        <b>📍場所:</b> {mdata.get('place','')}<br>
-        <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
-        <b>⭐満足度:</b> {mdata.get('score','')}<br>
-        <b>📝メモ:</b> {mdata.get('memo','')}
-        {img_html}
-    </div>
-    """
+        folium.Marker(
+            [lat, lon],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
+        ).add_to(map_obj)
 
-    folium.Marker(
-        [lat, lon],
-        popup=folium.Popup(popup_html, max_width=300),
-        icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
-    ).add_to(map_obj)
-
-st_folium(map_obj)
+    st_folium(map_obj)
