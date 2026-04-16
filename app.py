@@ -62,23 +62,28 @@ if "liked" not in st.session_state:
 # =====================
 # 入力
 # =====================
-query = st.text_input("場所")
+col1, col2 = st.columns([1, 2])
 
-candidates = []
-selected = None
+with col1:
+    query = st.text_input("場所")
 
-if query:
-    candidates = get_place_candidates(query)
+    candidates = []
+    selected = None
 
-options = []
-if candidates:
-    options = [loc.address for loc in candidates]
-    selected = st.selectbox("候補から選択", options)
+    if query:
+        candidates = get_place_candidates(query)
+
+    options = []
+    if candidates:
+        options = [loc.address for loc in candidates]
+        selected = st.selectbox("候補から選択", options)
     
-food = st.text_input("食べたもの")
-score = st.slider("満足度", 1, 5, 3)
-memo = st.text_input("感想")
-image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
+    food = st.text_input("食べたもの")
+    score = st.slider("満足度", 1, 5, 3)
+    memo = st.text_input("感想")
+    image = st.file_uploader("写真", type=["png", "jpg", "jpeg"])
+
+    if st.button("保存"):
 
 # =====================
 # 地名→座標
@@ -147,63 +152,64 @@ for m in sorted_memories[:3]:
 # =====================
 # 一覧
 # =====================
-st.subheader("📚 思い出一覧")
+with col2:
+    st.subheader("📚 思い出一覧")
 
-filtered = [
-    m for m in st.session_state.memories
-    if search.lower() in m["place"].lower()
-    or search.lower() in m["memo"].lower()
-    or search.lower() in m["food"].lower()
-]
+    filtered = [
+        m for m in st.session_state.memories
+        if search.lower() in m["place"].lower()
+        or search.lower() in m["memo"].lower()
+        or search.lower() in m["food"].lower()
+    ]
 
-for i, m in enumerate(filtered):
+    for i, m in enumerate(filtered):
 
-    # 🟦カード（情報）
-    st.markdown(
-        f"""
-    <div style="
-        background:#fff;
-        border-radius:14px;
-        margin:10px 0;
-        overflow:hidden;
-        box-shadow:0 2px 6px rgba(0,0,0,0.08);
-    ">
+        # 🟦カード（情報）
+        st.markdown(
+            f"""
+        <div style="
+            background:#fff;
+            border-radius:14px;
+            margin:10px 0;
+            overflow:hidden;
+            box-shadow:0 2px 6px rgba(0,0,0,0.08);
+        ">
 
-    <img src="data:image/png;base64,{m['image']}"
-    style="width:100%; display:block;">
+        <img src="data:image/png;base64,{m['image']}"
+        style="width:100%; display:block;">
 
-    <div style="padding:10px 12px;">
-        <div style="font-weight:bold;">📍 {m['place']}</div>
-        <div style="font-size:13px; color:#666;">
-            🍽 {m['food']}　⭐ {m['score']}
+        <div style="padding:10px 12px;">
+            <div style="font-weight:bold;">📍 {m['place']}</div>
+            <div style="font-size:13px; color:#666;">
+                🍽 {m['food']}　⭐ {m['score']}
+            </div>
+            <div style="font-size:13px; margin-top:4px;">
+                {m['memo']}
+            </div>
         </div>
-        <div style="font-size:13px; margin-top:4px;">
-            {m['memo']}
-        </div>
-    </div>
 
-    </div>
-    """,
-        unsafe_allow_html=True
-    )
+        </div>
+        """,
+            unsafe_allow_html=True
+        )
         
-    # 🟦ボタン
-    col1, col2 = st.columns([1, 4])
+        # 🟦ボタン
+        col1, col2 = st.columns([1, 4])
 
-    with col1:
-        if st.button(
-            f"❤️ {m.get('likes', 0)}",
-            key=f"like_{m.get('id', i)}"
-        ):
-            m["likes"] = m.get("likes", 0) + 1
-            save_data()
-            st.rerun()
+        with col1:
+            if st.button(
+                f"❤️ {m.get('likes', 0)}",
+                key=f"like_{m.get('id', i)}"
+            ):
+                m["likes"] = m.get("likes", 0) + 1
+                save_data()
+                st.rerun()
 
-    with col2:
-        if st.button("🗑", key=f"delete_{m.get('id', i)}"):
-            st.session_state.memories.remove(m)
-            save_data()
-            st.rerun()
+        with col2:
+            if st.button("🗑", key=f"delete_{m.get('id', i)}"):
+                st.session_state.memories.remove(m)
+                save_data()
+                st.rerun()
             
 # =====================
 # 地図
