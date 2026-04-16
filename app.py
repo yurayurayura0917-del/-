@@ -147,14 +147,27 @@ filtered = [
 
 for i, m in enumerate(sorted_memories):
 
-    st.markdown("カード")
+    # 🟦カード（情報）
+    st.markdown(f"""
+    <div style="
+        background:#ffffff;
+        padding:15px;
+        margin:10px 0;
+        border-radius:12px;
+        box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    ">
+        <h4>📍 {m['place']}</h4>
+        <p>🍽 {m['food']}　⭐ {m['score']}</p>
+        <p>📝 {m['memo']}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # 画像表示
+    # 🟦画像
     if m["image"]:
         img_bytes = base64.b64decode(m["image"])
         st.image(img_bytes, width=200)
 
-    # 👇ここに移動！！
+    # 🟦ボタン（下に配置）
     col1, col2 = st.columns([1, 4])
 
     with col1:
