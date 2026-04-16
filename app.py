@@ -80,7 +80,7 @@ if st.button("保存"):
 # =====================
 st.subheader("📚 思い出一覧")
 
-for m in st.session_state.memories:
+for i, m in enumerate(st.session_state.memories):
 
     st.markdown(f"""
     <div style="
@@ -98,10 +98,6 @@ for m in st.session_state.memories:
 
     if m["image"]:
         st.image(m["image"], width=200)
-
-    for i, m in enumerate(st.session_state.memories):
-
-    st.markdown(f"📍 {m['place']}")
 
     if st.button(f"削除{i}"):
         st.session_state.memories.pop(i)
