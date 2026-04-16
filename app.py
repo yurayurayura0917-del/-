@@ -156,65 +156,50 @@ filtered = [
 
 for i, m in enumerate(filtered):
 
-    # ⭐②ここに入れる（カードの前）
     img_html = ""
 
-    if m["image"]:
+    if m.get("image"):
         img_html = f"""
         <img src="data:image/png;base64,{m['image']}"
         style="width:100%; border-radius:12px; margin-top:10px;">
         """
-    
-    # 🟦カード（情報）
-    st.markdown(f"""
+
+    card_html = f"""
     <div style="
-        background:#ffffff;
+        background:white;
         padding:18px;
         margin:15px 0;
         border-radius:16px;
         box-shadow:0 4px 12px rgba(0,0,0,0.08);
     ">
         <div style="font-size:18px; font-weight:bold;">
-            📍 {m['place']}
+            📍 {m.get('place','')}
         </div>
 
         <div style="margin-top:5px; color:#555;">
-            🍽 {m['food']}　⭐ {m['score']}
+            🍽 {m.get('food','')}　⭐ {m.get('score','')}
         </div>
 
         <div style="margin-top:8px; font-size:14px;">
-            📝 {m['memo']}
+            📝 {m.get('memo','')}
         </div>
 
         {img_html}
-
     </div>
-    """, unsafe_allow_html=True)
-    
-    # 🟦ボタン（下に配置）
-    liked = m["id"] in st.session_state.liked
+    """
 
-    like_color = "red" if liked else "black"
+    st.markdown(card_html, unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        if st.button(
-            f"{'❤️' if liked else '🤍'} {m.get('likes',0)}",
-            key=f"like_{m['id']}"
-        ):
-            if liked:
-                m["likes"] = max(0, m["likes"] - 1)
-                st.session_state.liked.remove(m["id"])
-            else:
-                m["likes"] = m.get("likes", 0) + 1
-                st.session_state.liked.add(m["id"])
-
+        if st.button(f"❤️ {m.get('likes',0)}", key=f"like_{m.get('id',i)}"):
+            m["likes"] = m.get("likes", 0) + 1
             save_data()
             st.rerun()
 
     with col2:
-        if st.button("🗑", key=f"delete_{m['id']}"):
+        if st.button("🗑", key=f"delete_{m.get('id',i)}"):
             st.session_state.memories.remove(m)
             save_data()
             st.rerun()
