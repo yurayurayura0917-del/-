@@ -158,10 +158,10 @@ for i, m in enumerate(sorted_memories):
 
     # ⭐②ここに入れる（カードの前）
     if m["image"]:
-        img_html = f'<img src="data:image/png;base64,{img_base64}" style="width:100%; border-radius:12px; margin-top:10px;">'
+        img_html = f'<img src="data:image/png;base64,{m["image"]}" style="width:100%; border-radius:12px; margin-top:10px;">'
     else:
         img_html = ""
-
+    
     # 🟦カード（情報）
     st.markdown(f"""
     <div style="
