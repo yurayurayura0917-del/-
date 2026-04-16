@@ -111,29 +111,39 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="top-plus">', unsafe_allow_html=True)
+st.markdown("""
+<style>
+.plus-btn {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 999;
+}
+</style>
+""", unsafe_allow_html=True)
 
-if st.button("＋"):
-    st.session_state.page = "add"
-    st.rerun()
+col_plus = st.container()
 
-st.markdown('</div>', unsafe_allow_html=True)
+with col_plus:
+    st.markdown('<div class="plus-btn">', unsafe_allow_html=True)
+    if st.button("＋", key="plus"):
+        st.session_state.page = "add"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown('<div class="bottom-nav">', unsafe_allow_html=True)
+st.markdown("<br><br><br><br>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("📚"):
+    if st.button("📚", use_container_width=True):
         st.session_state.page = "home"
         st.rerun()
 
 with col2:
-    if st.button("🗺"):
+    if st.button("🗺", use_container_width=True):
         st.session_state.page = "map"
         st.rerun()
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================
 # 入力
