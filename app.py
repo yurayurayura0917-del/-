@@ -68,6 +68,14 @@ for m in st.session_state.memories:
 # =====================
 st.title("📍 おいしいお店保存するアプリ")
 
+st.markdown("""
+    <style>
+    button[kind="secondary"] {
+        border-radius: 50%;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 col1, col2, col3 = st.columns([1, 1, 8])
 
 with col1:
