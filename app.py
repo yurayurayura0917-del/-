@@ -113,6 +113,17 @@ if st.button("保存"):
 
 search = st.text_input("🔍 検索（場所・メモ・食べ物）")
 
+st.subheader("🔥 人気ランキング")
+
+sorted_memories = sorted(
+    st.session_state.memories,
+    key=lambda x: x.get("likes", 0),
+    reverse=True
+)
+
+for m in sorted_memories[:3]:
+    st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
+
 # =====================
 # 一覧
 # =====================
@@ -125,7 +136,7 @@ filtered = [
     or search.lower() in m["food"].lower()
 ]
 
-for i, m in enumerate(reversed(filtered)):
+for i, m in enumerate(sorted_memories):
 
     st.markdown(f"""
     <div style="
