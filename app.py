@@ -198,7 +198,7 @@ elif st.session_state.page == "map":
     st_folium(map_obj)
 
  # 一覧
-elif st.session_stage.page == "add":
+elif st.session_state.page == "add":
     st.subheader("🔥 人気ランキング")
 
     sorted_memories = sorted(
