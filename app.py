@@ -133,7 +133,7 @@ for mdata in st.session_state.memories:
 
     img_html = ""
     if mdata.get("image"):
-        img_b64 = base64.b64encode(mdata["image"]).decode()
+        img_b64 = mdata["image"]
         img_html = f"""
         <br>
         <img src="data:image/jpeg;base64,{img_b64}" width="200">
