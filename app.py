@@ -42,6 +42,9 @@ if "memories" not in st.session_state:
 # =====================
 st.title("📍 ゆらの思い出アプリ")
 
+if "liked" not in st.session_state:
+    st.session_state.liked = set()
+
 # =====================
 # 入力
 # =====================
@@ -137,6 +140,24 @@ filtered = [
 ]
 
 for i, m in enumerate(sorted_memories):
+
+    st.markdown("カード")
+
+    liked = i in st.session_state.liked
+
+    if st.button(
+        f"{'💔' if liked else '❤️'} {m.get('likes',0)}",
+        key=f"like{i}"
+    ):
+        if liked:
+            m["likes"] = max(0, m["likes"] - 1)
+            st.session_state.liked.remove(i)
+        else:
+            m["likes"] = m.get("likes", 0) + 1
+            st.session_state.liked.add(i)
+
+        save_data()
+        st.rerun()
 
     st.markdown(f"""
     <div style="
