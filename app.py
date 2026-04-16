@@ -98,9 +98,9 @@ for i, m in enumerate(st.session_state.memories):
     </div>
     """, unsafe_allow_html=True)
     
-　　if m["image"]:
-    　　img_bytes = base64.b64decode(m["image"])
-    　　st.image(img_bytes, width=200)
+    if m["image"]:
+        img_bytes = base64.b64decode(m["image"])
+        st.image(img_bytes, width=200)
 
     if st.button(f"削除{i}"):
         st.session_state.memories.pop(i)
