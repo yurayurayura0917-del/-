@@ -32,6 +32,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+def get_lat_lon(place_name):
+    try:
+        loc = geolocator.geocode(place_name + ", Japan")
+        if loc:
+            return loc.latitude, loc.longitude
+    except:
+        pass
+    return None, None
+
 # =====================
 # データ保存（簡易）
 # =====================
@@ -86,69 +95,51 @@ with col1:
     image = st.file_uploader("写真")
 
     if st.button("保存"):
-        # 保存処理
+        lat, lon = None, None
+        place = query  # デフォルト
 
-# =====================
-# 地名→座標
-# =====================
-def get_lat_lon(place_name):
-    try:
-        loc = geolocator.geocode(place_name + ", Japan")
-        if loc:
-            return loc.latitude, loc.longitude
-    except:
-        pass
-    return None, None
-
-# =====================
-# 保存
-# =====================
-if st.button("保存"):
-    lat, lon = None, None
-    place = query  # デフォルト
-
-    if candidates and selected:
-        for loc in candidates:
-            if loc.address == selected:
-                lat = loc.latitude
-                lon = loc.longitude
-                place = selected  # ←選んだ住所を保存
-                break
+        if candidates and selected:
+            for loc in candidates:
+                if loc.address == selected:
+                    lat = loc.latitude
+                    lon = loc.longitude
+                    place = selected  # ←選んだ住所を保存
+                    break
                 
-    img_bytes = None
+        img_bytes = None
     
-    if image:
-        img_bytes = image.read()
-        img_base64 = base64.b64encode(img_bytes).decode()
+        if image:
+            img_bytes = image.read()
+            img_base64 = base64.b64encode(img_bytes).decode()
 
-        m["image"] = img_base64
+            m["image"] = img_base64
 
-    st.session_state.memories.append({
-        "id": str(uuid.uuid4()),
-        "place": place,
-        "food": food,
-        "score": score,
-        "memo": memo,
-        "lat": lat,
-        "lon": lon,
-        "image": img_base64,
-        "likes": 0
-    })
+        st.session_state.memories.append({
+            "id": str(uuid.uuid4()),
+            "place": place,
+            "food": food,
+            "score": score,
+            "memo": memo,
+            "lat": lat,
+            "lon": lon,
+            "image": img_base64,
+            "likes": 0
+        })
     
-    save_data()
+        save_data()
     
-    st.success("保存したよ！")
+        st.success("保存したよ！")
 
-st.subheader("🔥 人気ランキング")
+    st.subheader("🔥 人気ランキング")
 
-sorted_memories = sorted(
-    st.session_state.memories,
-    key=lambda x: x.get("likes", 0),
-    reverse=True
-)
+    sorted_memories = sorted(
+        st.session_state.memories,
+        key=lambda x: x.get("likes", 0),
+        reverse=True
+    )
 
-for m in sorted_memories[:3]:
-    st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
+    for m in sorted_memories[:3]:
+        st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
 
 # =====================
 # 一覧
