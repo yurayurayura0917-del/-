@@ -145,9 +145,9 @@ for i, m in enumerate(reversed(filtered)):
         st.image(img_bytes, width=200)
 
     if st.button(f"削除{i}"):
-    st.session_state.memories.remove(m)
-    save_data()
-    st.rerun()
+        st.session_state.memories.remove(m)
+        save_data()
+        st.rerun()
 
 # =====================
 # 地図
