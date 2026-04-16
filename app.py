@@ -164,10 +164,10 @@ else:
 
 col_map, col_list = st.columns([2, 1])
 
-    # 地図
-    import base64
-    import folium
-    from streamlit_folium import st_folium
+# 地図
+import base64
+import folium
+from streamlit_folium import st_folium
 
 with col_map:
     st.subheader("🗺 地図")
