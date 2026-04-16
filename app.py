@@ -8,6 +8,7 @@ from streamlit_folium import st_folium
 import base64
 from PIL import Image
 import io
+import uuid
 
 geolocator = Nominatim(user_agent="memory_app")
 
@@ -28,6 +29,10 @@ def get_place_candidates(query):
 import os
 
 if "memories" not in st.session_state:
+    for m in st.session_state.memories:
+        if "id" not in m:
+            m["id"] = str(uuid.uuid4())
+            
     if os.path.exists("memories.json"):
         try:
             with open("memories.json", "r") as f:
@@ -100,6 +105,7 @@ if st.button("保存"):
         img_base64 = base64.b64encode(img_bytes).decode()
 
     st.session_state.memories.append({
+        "id": str(uuid.uuid4()),
         "place": place,
         "food": food,
         "score": score,
