@@ -15,6 +15,13 @@ def save_data():
     with open("memories.json", "w") as f:
         json.dump(st.session_state.memories, f)
 
+def get_place_candidates(query):
+    try:
+        locations = geolocator.geocode(query + ", Japan", exactly_one=False, limit=5)
+        return locations
+    except:
+        return []
+
 # =====================
 # データ保存（簡易）
 # =====================
@@ -67,13 +74,6 @@ def get_lat_lon(place_name):
     except:
         pass
     return None, None
-
-def get_place_candidates(query):
-    try:
-        locations = geolocator.geocode(query + ", Japan", exactly_one=False, limit=5)
-        return locations
-    except:
-        return []
 
 # =====================
 # 保存
