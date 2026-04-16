@@ -23,6 +23,15 @@ def get_place_candidates(query):
     except:
         return []
 
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # =====================
 # データ保存（簡易）
 # =====================
@@ -45,7 +54,7 @@ for m in st.session_state.memories:
 # =====================
 # タイトル
 # =====================
-st.title("📍 ゆらの思い出アプリ")
+st.title("📍 おいしいお店保存するアプリ")
 
 if "liked" not in st.session_state:
     st.session_state.liked = set()
@@ -174,13 +183,15 @@ for i, m in enumerate(sorted_memories):
         st.image(img_bytes, use_container_width=True)
 
     # 🟦ボタン（下に配置）
+    liked = m["id"] in st.session_state.liked
+
+    like_color = "red" if liked else "black"
+
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        liked = m["id"] in st.session_state.liked
-
         if st.button(
-            f"{'💔' if liked else '❤️'} {m.get('likes',0)}",
+            f"{'❤️' if liked else '🤍'} {m.get('likes',0)}",
             key=f"like_{m['id']}"
         ):
             if liked:
@@ -194,7 +205,7 @@ for i, m in enumerate(sorted_memories):
             st.rerun()
 
     with col2:
-        if st.button(f"削除{i}", key=f"delete_{m['id']}"):
+        if st.button("🗑", key=f"delete_{m['id']}"):
             st.session_state.memories.remove(m)
             save_data()
             st.rerun()
