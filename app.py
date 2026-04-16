@@ -68,6 +68,23 @@ for m in st.session_state.memories:
 # =====================
 st.title("📍 おいしいお店保存するアプリ")
 
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("📚 一覧"):
+        st.session_state.page = "home"
+        st.rerun()
+
+with col2:
+    if st.button("🗺 地図"):
+        st.session_state.page = "map"
+        st.rerun()
+
+with col3:
+    if st.button("➕ 追加"):
+        st.session_state.page = "add"
+        st.rerun()
+
 if "liked" not in st.session_state:
     st.session_state.liked = set()
 
@@ -141,35 +158,12 @@ if st.session_state.page == "add":
         st.session_state.page = "home"
         st.rerun()
 
-else:
-    st.subheader("🔥 人気ランキング")
-
-    sorted_memories = sorted(
-        st.session_state.memories,
-        key=lambda x: x.get("likes", 0),
-        reverse=True
-    )
-
-    for m in sorted_memories[:3]:
-        st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
-
-    search = st.text_input("🔍 検索")
-
-    filtered = [
-        m for m in st.session_state.memories
-        if search.lower() in m["place"].lower()
-        or search.lower() in m["memo"].lower()
-        or search.lower() in m["food"].lower()
-    ]
-
-col_map, col_list = st.columns([2, 1])
-
 # 地図
 import base64
 import folium
 from streamlit_folium import st_folium
 
-with col_map:
+elif st.session_stage.page == "map":
     st.subheader("🗺 地図")
 
     map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
@@ -209,7 +203,27 @@ with col_map:
     st_folium(map_obj)
 
  # 一覧
-with col_list:
+elif st.session_stage.page == "add":
+    st.subheader("🔥 人気ランキング")
+
+    sorted_memories = sorted(
+        st.session_state.memories,
+        key=lambda x: x.get("likes", 0),
+        reverse=True
+    )
+
+    for m in sorted_memories[:3]:
+        st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
+
+    search = st.text_input("🔍 検索")
+
+    filtered = [
+        m for m in st.session_state.memories
+        if search.lower() in m["place"].lower()
+        or search.lower() in m["memo"].lower()
+        or search.lower() in m["food"].lower()
+    ]
+
     st.subheader("📚 思い出一覧")
 
     filtered = [
