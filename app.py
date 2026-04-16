@@ -18,13 +18,18 @@ def save_data():
 # =====================
 # データ保存（簡易）
 # =====================
+import os
+
 if "memories" not in st.session_state:
     if os.path.exists("memories.json"):
-        with open("memories.json", "r") as f:
-            st.session_state.memories = json.load(f)
+        try:
+            with open("memories.json", "r") as f:
+                st.session_state.memories = json.load(f)
+        except:
+            st.session_state.memories = []
     else:
         st.session_state.memories = []
-
+        
 # =====================
 # タイトル
 # =====================
