@@ -184,33 +184,32 @@ else:
 
         # カード
         st.markdown(
-            f"""
-            <div style="
-                background:#fff;
-                padding:18px;
-                margin:15px 0;
-                border-radius:16px;
-                box-shadow:0 2px 6px rgba(0,0,0,0.08);
-            ">
+        f"""
+    <div style="
+        background:#fff;
+        border-radius:14px;
+        margin:10px 0;
+        overflow:hidden;
+        box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    ">
 
-                {img_html}
+    <img src="data:image/png;base64,{m['image']}"
+    style="width:100%; display:block;">
 
-                <div style="font-size:18px; font-weight:bold;">
-                    📍 {m['place']}
-                </div>
+    <div style="padding:10px 12px;">
+        <div style="font-weight:bold;">📍 {m['place']}</div>
+        <div style="font-size:13px; color:#666;">
+            🍽 {m['food']}　⭐ {m['score']}
+        </div>
+        <div style="font-size:13px; margin-top:4px;">
+            {m['memo']}
+        </div>
+    </div>
 
-                <div style="color:#666; font-size:13px;">
-                    🍽 {m['food']}　⭐ {m['score']}
-                </div>
-
-                <div style="margin-top:6px; font-size:13px;">
-                    📝 {m['memo']}
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    </div>
+    """,
+        unsafe_allow_html=True
+    )
 
         col1, col2 = st.columns([1, 4])
 
