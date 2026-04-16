@@ -131,8 +131,6 @@ with col_plus:
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-
 col1, col2 = st.columns(2)
 
 with col1:
