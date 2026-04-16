@@ -174,43 +174,43 @@ else:
 
     for m in filtered:
 
-    # 画像
-    img_html = ""
-    if m.get("image"):
-        img_html = f"""
-        <img src="data:image/png;base64,{m['image']}"
-        style="width:100%; border-radius:12px; margin-bottom:8px;">
-        """
+        # 画像
+        img_html = ""
+        if m.get("image"):
+            img_html = f"""
+            <img src="data:image/png;base64,{m['image']}"
+            style="width:100%; border-radius:12px; margin-bottom:8px;">
+            """
 
-    # カード
-    st.markdown(
-        f"""
-        <div style="
-            background:#fff;
-            padding:18px;
-            margin:15px 0;
-            border-radius:16px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        ">
+        # カード
+        st.markdown(
+            f"""
+            <div style="
+                background:#fff;
+                padding:18px;
+                margin:15px 0;
+                border-radius:16px;
+                box-shadow:0 2px 6px rgba(0,0,0,0.08);
+            ">
 
-            {img_html}
+                {img_html}
 
-            <div style="font-size:18px; font-weight:bold;">
-                📍 {m['place']}
+                <div style="font-size:18px; font-weight:bold;">
+                    📍 {m['place']}
+                </div>
+
+                <div style="color:#666; font-size:13px;">
+                    🍽 {m['food']}　⭐ {m['score']}
+                </div>
+
+                <div style="margin-top:6px; font-size:13px;">
+                    📝 {m['memo']}
+                </div>
+
             </div>
-
-            <div style="color:#666; font-size:13px;">
-                🍽 {m['food']}　⭐ {m['score']}
-            </div>
-
-            <div style="margin-top:6px; font-size:13px;">
-                📝 {m['memo']}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            """,
+            unsafe_allow_html=True
+        )
 
         col1, col2 = st.columns([1, 4])
 
