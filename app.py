@@ -166,14 +166,9 @@ for i, m in enumerate(filtered):
         style="width:100%; border-radius:12px; margin-top:10px;">
         """
 
-    st.markdown(f"""
-    <div style="
-        background:white;
-        padding:18px;
-        margin:15px 0;
-        border-radius:16px;
-        box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    ">
+    card_html = f"""
+    <div style="background:white;padding:18px;margin:15px 0;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+
         <div style="font-size:18px; font-weight:bold;">
             📍 {m.get('place','')}
         </div>
@@ -187,10 +182,11 @@ for i, m in enumerate(filtered):
         </div>
 
         {img_html}
+
     </div>
     """
 
-    , unsafe_allow_html=True)
+    st.markdown(card_html, unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 4])
 
