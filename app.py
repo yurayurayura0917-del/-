@@ -68,7 +68,7 @@ for m in st.session_state.memories:
 # =====================
 st.title("📍 おいしいお店保存するアプリ")
 
-col1, col2, spacer, col3 = st.columns([1, 1, 6, 1])
+col1, col2, col3 = st.columns([1, 1, 8])
 
 with col1:
     if st.button("📚"):
