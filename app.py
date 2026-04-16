@@ -209,7 +209,7 @@ with col_map:
     st_folium(map_obj)
 
  # 一覧
-with col_last:
+with col_list:
     st.subheader("📚 思い出一覧")
 
     filtered = [
