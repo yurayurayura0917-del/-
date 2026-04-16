@@ -158,8 +158,6 @@ filtered = [
 
 for i, m in enumerate(filtered):
 
-    st.write(m["image"])
-
     img_html = ""
 
     if m.get("image"):
@@ -168,7 +166,7 @@ for i, m in enumerate(filtered):
         style="width:100%; border-radius:12px; margin-top:10px;">
         """
 
-    card_html = f"""
+    st.markdown(f"""
     <div style="
         background:white;
         padding:18px;
@@ -192,7 +190,7 @@ for i, m in enumerate(filtered):
     </div>
     """
 
-    st.markdown(card_html, unsafe_allow_html=True)
+    , unsafe_allow_html=True)
 
     col1, col2 = st.columns([1, 4])
 
