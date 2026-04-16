@@ -66,6 +66,18 @@ for m in st.session_state.memories:
 # =====================
 # タイトル
 # =====================
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 1rem;
+}
+div.stButton {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("📍 おいしいお店保存するアプリ")
 
 st.markdown("""
