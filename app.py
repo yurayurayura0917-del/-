@@ -58,8 +58,10 @@ if st.button("保存"):
     lat, lon = get_lat_lon(place)
 
     img_bytes = None
+    
     if image:
         img_bytes = image.read()
+        img_base64 = base64.b64encode(img_bytes).decode()
 
     st.session_state.memories.append({
         "place": place,
@@ -68,7 +70,7 @@ if st.button("保存"):
         "memo": memo,
         "lat": lat,
         "lon": lon,
-        "image": img_bytes
+        "image": img_base64
     })
     
     save_data()
@@ -95,9 +97,10 @@ for i, m in enumerate(st.session_state.memories):
         <p>📝 {m['memo']}</p>
     </div>
     """, unsafe_allow_html=True)
-
-    if m["image"]:
-        st.image(m["image"], width=200)
+    
+　　if m["image"]:
+    　　img_bytes = base64.b64decode(m["image"])
+    　　st.image(img_bytes, width=200)
 
     if st.button(f"削除{i}"):
         st.session_state.memories.pop(i)
