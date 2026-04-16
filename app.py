@@ -166,7 +166,7 @@ else:
 
     for i, m in enumerate(filtered):
 
-        st.markdown(... ←今のカードそのまま)
+        st.markdown(card_html, unsafe_allow_html=True)
 
         col1, col2 = st.columns([1, 4])
 
