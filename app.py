@@ -162,7 +162,54 @@ else:
         or search.lower() in m["food"].lower()
     ]
 
-    # 一覧
+col_map, col_list = st.columns([2, 1])
+
+    # 地図
+    import base64
+    import folium
+    from streamlit_folium import st_folium
+
+with col_map:
+    st.subheader("🗺 地図")
+
+    map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
+
+    for mdata in st.session_state.memories:
+
+        lat = mdata.get("lat")
+        lon = mdata.get("lon")
+
+        if lat is None or lon is None:
+            continue
+
+        img_html = ""
+        if mdata.get("image"):
+            img_b64 = mdata["image"]
+            img_html = f"""
+            <br>
+            <img src="data:image/jpeg;base64,{img_b64}" width="200">
+            """
+
+        popup_html = f"""
+        <div style="width:220px">
+            <b>📍場所:</b> {mdata.get('place','')}<br>
+            <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
+            <b>⭐満足度:</b> {mdata.get('score','')}<br>
+            <b>📝メモ:</b> {mdata.get('memo','')}
+            {img_html}
+        </div>
+        """
+
+        folium.Marker(
+            [lat, lon],
+            popup=folium.Popup(popup_html, max_width=300),
+            icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
+        ).add_to(map_obj)
+
+    st_folium(map_obj)
+
+ # 一覧
+with col_last:
     st.subheader("📚 思い出一覧")
 
     filtered = [
@@ -225,45 +272,3 @@ else:
                 save_data()
                 st.rerun()
 
-    # 地図
-    import base64
-    import folium
-    from streamlit_folium import st_folium
-
-    st.subheader("🗺 地図")
-
-    map_obj = folium.Map(location=[35.7, 139.7], zoom_start=5)
-
-    for mdata in st.session_state.memories:
-
-        lat = mdata.get("lat")
-        lon = mdata.get("lon")
-
-        if lat is None or lon is None:
-            continue
-
-        img_html = ""
-        if mdata.get("image"):
-            img_b64 = mdata["image"]
-            img_html = f"""
-            <br>
-            <img src="data:image/jpeg;base64,{img_b64}" width="200">
-            """
-
-        popup_html = f"""
-        <div style="width:220px">
-            <b>📍場所:</b> {mdata.get('place','')}<br>
-            <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
-            <b>⭐満足度:</b> {mdata.get('score','')}<br>
-            <b>📝メモ:</b> {mdata.get('memo','')}
-            {img_html}
-        </div>
-        """
-
-        folium.Marker(
-            [lat, lon],
-            popup=folium.Popup(popup_html, max_width=300),
-            icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
-        ).add_to(map_obj)
-
-    st_folium(map_obj)
