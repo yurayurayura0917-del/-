@@ -142,7 +142,6 @@ if st.session_state.page == "add":
         st.rerun()
 
 else:
-
     st.subheader("🔥 人気ランキング")
 
     sorted_memories = sorted(
@@ -153,6 +152,15 @@ else:
 
     for m in sorted_memories[:3]:
         st.write(f"📍{m['place']} ❤️{m.get('likes',0)}")
+
+    search = st.text_input("🔍 検索")
+
+    filtered = [
+        m for m in st.session_state.memories
+        if search.lower() in m["place"].lower()
+        or search.lower() in m["memo"].lower()
+        or search.lower() in m["food"].lower()
+    ]
 
     # 一覧
     st.subheader("📚 思い出一覧")
