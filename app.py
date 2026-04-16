@@ -158,46 +158,48 @@ filtered = [
 
 for i, m in enumerate(filtered):
 
-    img_html = ""
-
-    if m.get("image"):
-        img_html = f"""
-        <img src="data:image/png;base64,{m['image']}"
-        style="width:100%; border-radius:12px; margin-top:10px;">
-        """
-
-    card_html = f"""
-    <div style="background:white;padding:18px;margin:15px 0;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-
+    # 🟦カード（情報）
+    st.markdown(f"""
+    <div style="
+        background:#ffffff;
+        padding:18px;
+        margin:15px 0;
+        border-radius:16px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
         <div style="font-size:18px; font-weight:bold;">
-            📍 {m.get('place','')}
+            📍 {m['place']}
         </div>
 
         <div style="margin-top:5px; color:#555;">
-            🍽 {m.get('food','')}　⭐ {m.get('score','')}
+            🍽 {m['food']}　⭐ {m['score']}
         </div>
 
         <div style="margin-top:8px; font-size:14px;">
-            📝 {m.get('memo','')}
+            📝 {m['memo']}
         </div>
-
-        {img_html}
-
     </div>
-    """
+    """, unsafe_allow_html=True)
 
-    st.markdown(card_html, unsafe_allow_html=True)
+    # 🟦画像
+    if m.get("image"):
+        img_bytes = base64.b64decode(m["image"])
+        st.image(img_bytes, use_container_width=True)
 
+    # 🟦ボタン
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        if st.button(f"❤️ {m.get('likes',0)}", key=f"like_{m.get('id',i)}"):
+        if st.button(
+            f"❤️ {m.get('likes', 0)}",
+            key=f"like_{m.get('id', i)}"
+        ):
             m["likes"] = m.get("likes", 0) + 1
             save_data()
             st.rerun()
 
     with col2:
-        if st.button("🗑", key=f"delete_{m.get('id',i)}"):
+        if st.button("🗑", key=f"delete_{m.get('id', i)}"):
             st.session_state.memories.remove(m)
             save_data()
             st.rerun()
