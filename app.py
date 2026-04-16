@@ -158,6 +158,8 @@ filtered = [
 
 for i, m in enumerate(filtered):
 
+    st.write(m["image"])
+
     img_html = ""
 
     if m.get("image"):
