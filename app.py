@@ -329,9 +329,9 @@ elif st.session_state.page == "home":
 
             if st.button(f"{'❤️' if liked else '🤍'} {m.get('likes',0)}", key=f"like_{m['id']}"):
 
-            doc_ref = db.collection("memories").document(m["id"])
-            doc = doc_ref.get()
-            current_likes = doc.to_dict().get("likes", 0)
+                doc_ref = db.collection("memories").document(m["id"])
+                doc = doc_ref.get()
+                current_likes = doc.to_dict().get("likes", 0)
 
             if liked:
                 doc_ref.update({"likes": max(0, current_likes - 1)})
