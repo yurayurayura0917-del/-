@@ -38,7 +38,7 @@ if not firebase_admin._apps:
         "storageBucket": "tabemap-4faaf.appspot.com"
     })
 
-bucket = storage.bucket()
+bucket = storage.bucket("tabemap-4faaf.appspot.com")
 
 if "page" not in st.session_state:
     st.session_state.page = "home"
