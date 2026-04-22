@@ -20,6 +20,15 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 
+st.session_state.memories = []
+
+docs = db.collection("memories").stream()
+
+for doc in docs:
+    data = doc.to_dict()
+    data["id"] = doc.id
+    st.session_state.memories.append(data)
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -321,7 +330,8 @@ elif st.session_state.page == "home":
 
         with col2:
             if st.button("🗑", key=f"delete_{m['id']}"):
-                st.session_state.memories.remove(m)
+                db.collection("memories").document(m["id"]).delete()
+                st.rerun()
                 save_data()
                 st.rerun()
 
