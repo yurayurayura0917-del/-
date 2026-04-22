@@ -196,7 +196,7 @@ if st.session_state.page == "add":
                     place = selected
                     break
 
-       image_url = None
+        image_url = None
 
         if image:
             img_bytes = image.read()
