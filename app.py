@@ -333,14 +333,14 @@ elif st.session_state.page == "home":
                 doc = doc_ref.get()
                 current_likes = doc.to_dict().get("likes", 0)
 
-            if liked:
-                doc_ref.update({"likes": max(0, current_likes - 1)})
-                st.session_state.liked.remove(m["id"])
-            else:
-                doc_ref.update({"likes": current_likes + 1})
-                st.session_state.liked.add(m["id"])
+                if liked:
+                    doc_ref.update({"likes": max(0, current_likes - 1)})
+                    st.session_state.liked.remove(m["id"])
+                else:
+                    doc_ref.update({"likes": current_likes + 1})
+                    st.session_state.liked.add(m["id"])
 
-            st.rerun()
+                st.rerun()
 
         with col2:
             if st.button("🗑", key=f"delete_{m['id']}"):
