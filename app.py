@@ -29,6 +29,17 @@ for doc in docs:
     data["id"] = doc.id
     st.session_state.memories.append(data)
 
+from firebase_admin import storage
+import uuid
+
+if not firebase_admin._apps:
+    cred = credentials.Certificate(dict(st.secrets["firebase"]))
+    firebase_admin.initialize_app(cred, {
+        "storageBucket": "tabemap-4faaf.appspot.com"
+    })
+
+bucket = storage.bucket()
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -185,10 +196,18 @@ if st.session_state.page == "add":
                     place = selected
                     break
 
-        img_base64 = None
+       image_url = None
+
         if image:
             img_bytes = image.read()
-            img_base64 = base64.b64encode(img_bytes).decode()
+    
+            file_name = f"images/{uuid.uuid4()}.jpg"
+            blob = bucket.blob(file_name)
+    
+            blob.upload_from_string(img_bytes, content_type="image/jpeg")
+            blob.make_public()
+    
+            image_url = blob.public_url
 
         db.collection("memories").add({
             "place": place,
@@ -197,7 +216,7 @@ if st.session_state.page == "add":
             "memo": memo,
             "lat": lat,
             "lon": lon,
-            "image": img_base64,
+            "image": image_url,
             "likes": 0
         })
         
@@ -287,7 +306,7 @@ elif st.session_state.page == "home":
         img_html = ""
         if m.get("image"):
             img_html = f"""
-            <img src="data:image/png;base64,{m['image']}"
+            <img src="{m['image']}"
             style="width:100%; border-radius:12px; margin-bottom:8px;">
             """
 
