@@ -10,14 +10,20 @@ from PIL import Image
 import io
 import uuid
 
+import firebase_admin
+from firebase_admin import credentials, firestore
+import streamlit as st
+
+if not firebase_admin._apps:
+    cred = credentials.Certificate(dict(st.secrets["firebase"]))
+    firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
 geolocator = Nominatim(user_agent="memory_app")
-
-def save_data():
-    with open("memories.json", "w") as f:
-        json.dump(st.session_state.memories, f)
 
 def get_place_candidates(query):
     try:
@@ -47,21 +53,15 @@ def get_lat_lon(place_name):
 # =====================
 # データ保存（簡易）
 # =====================
-import os
-
 if "memories" not in st.session_state:
-    if os.path.exists("memories.json"):
-        try:
-            with open("memories.json", "r") as f:
-                st.session_state.memories = json.load(f)
-        except:
-            st.session_state.memories = []
-    else:
-        st.session_state.memories = []
+    st.session_state.memories = []
 
-for m in st.session_state.memories:
-    if "id" not in m:
-        m["id"] = str(uuid.uuid4())
+    docs = db.collection("memories").stream()
+
+    for doc in docs:
+        data = doc.to_dict()
+        data["id"] = doc.id
+        st.session_state.memories.append(data)
         
 # =====================
 # タイトル
@@ -181,8 +181,7 @@ if st.session_state.page == "add":
             img_bytes = image.read()
             img_base64 = base64.b64encode(img_bytes).decode()
 
-        st.session_state.memories.append({
-            "id": str(uuid.uuid4()),
+        db.collection("memories").add({
             "place": place,
             "food": food,
             "score": score,
@@ -192,8 +191,7 @@ if st.session_state.page == "add":
             "image": img_base64,
             "likes": 0
         })
-
-        save_data()
+        
         st.success("保存したよ！")
         st.session_state.page = "home"
         st.rerun()
