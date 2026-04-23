@@ -205,7 +205,7 @@ if st.session_state.page == "add":
             blob.upload_from_string(img_bytes, content_type="image/jpeg")
             blob.make_public()
     
-            image_url = blob.public_url
+            image_url = f"https://storage.googleapis.com/{bucket.name}/{file_name}"
 
         db.collection("memories").add({
             "place": place,
@@ -242,13 +242,11 @@ elif st.session_state.page == "map":
 
         img_html = ""
         if mdata.get("image"):
-            img_html = ""
-            if mdata.get("image"):
-                img_url = mdata["image"]
-                img_html = f"""
-                <br>
-                <img src="{img_url}" width="200">
-                """
+            img_url = mdata["image"]
+            img_html = f"""
+            <br>
+            <img src="{img_url}" width="200">
+            """
 
         popup_html = f"""
         <div style="width:220px">
@@ -321,8 +319,7 @@ elif st.session_state.page == "home":
         box-shadow:0 2px 6px rgba(0,0,0,0.08);
     ">
 
-    <img src="data:image/png;base64,{m['image']}"
-    style="width:100%; display:block;">
+    {img_html}
 
     <div style="padding:10px 12px;">
         <div style="font-weight:bold;">📍 {m['place']}</div>
