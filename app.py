@@ -244,7 +244,7 @@ elif st.session_state.page == "map":
         if mdata.get("image"):
             img_html = f'<br><img src="{mdata["image"]}" width="200">'
 
-        html = f"""<div style="width:350px">
+        html = f"""<div style="width:220px">
         <b>📍場所:</b> {mdata.get('place','')}<br>
         <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
         <b>⭐満足度:</b> {mdata.get('score','')}<br>
@@ -252,8 +252,8 @@ elif st.session_state.page == "map":
         {img_html}
         </div>"""
 
-        iframe = folium.IFrame(html=html, width=250, height=400)
-        popup = folium.Popup(iframe, max_width=500)
+        iframe = folium.IFrame(html=html, width=250, height=420)
+        popup = folium.Popup(iframe, max_width=300)
 
         folium.Marker(
             [lat, lon],
