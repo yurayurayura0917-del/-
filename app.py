@@ -252,7 +252,7 @@ elif st.session_state.page == "map":
         {img_html}
         </div>"""
 
-        iframe = folium.IFrame(html=html, width=230, height=250)
+        iframe = folium.IFrame(html=html, width=250, height=400)
         popup = folium.Popup(iframe, max_width=300)
 
         folium.Marker(
