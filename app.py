@@ -34,9 +34,7 @@ import uuid
 
 if not firebase_admin._apps:
     cred = credentials.Certificate(dict(st.secrets["firebase"]))
-    firebase_admin.initialize_app(cred, {
-        "storageBucket": "tabemap-4faaf.firestorestorage.app"
-    })
+    firebase_admin.initialize_app(cred)
 
 bucket = storage.bucket("tabemap-4faaf.firebasestorage.app")
 
