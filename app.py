@@ -260,8 +260,6 @@ elif st.session_state.page == "map":
             popup=popup,
             icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
         ).add_to(map_obj)
-            icon=folium.Icon(color="red", icon="map-marker", prefix="fa")
-        ).add_to(map_obj)
 
     st_folium(map_obj)
 
