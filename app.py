@@ -299,9 +299,8 @@ elif st.session_state.page == "home":
         # 画像
         img_html = ""
         if m.get("image"):
-            img_html = f"<img src='{m['image']}'style='width:100%; border-radius:12px;'>"
+            img_html = f"<img src='{m['image']}' style='width:100%; border-radius:12px;'>"
 
-        # カード
         st.markdown(
             f"""
             <div style="background:#fff; border-radius:14px; margin:10px 0; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
@@ -318,10 +317,10 @@ elif st.session_state.page == "home":
                     </div>
                 </div>
 
-                </div>
-                """,
-                unsafe_allow_html=True
-                )
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         col1, col2 = st.columns([1, 4])
 
