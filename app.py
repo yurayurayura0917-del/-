@@ -243,7 +243,6 @@ elif st.session_state.page == "map":
         img_html = ""
         if mdata.get("image"):
             img_html = f'<br><img src="{mdata["image"]}" width="200">'
-            """
 
         popup_html = f"""
         <div style="width:220px">
