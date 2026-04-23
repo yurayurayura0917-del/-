@@ -297,9 +297,12 @@ elif st.session_state.page == "home":
     for m in filtered:
 
         # 画像
+        import html
+
         img_html = ""
         if m.get("image"):
-            img_html = f"<img src='{m['image']}' style='width:100%; border-radius:12px;'>"
+            safe_url = html.escape(m["image"])
+            img_html = f"<img src='{safe_url}' style='width:100%; border-radius:12px;'>"
 
         st.markdown(
             f"""
