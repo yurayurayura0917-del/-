@@ -242,10 +242,7 @@ elif st.session_state.page == "map":
 
         img_html = ""
         if mdata.get("image"):
-            img_url = mdata["image"]
-            img_html = f"""
-            <br>
-            <img src="{img_url}" width="200">
+            img_html = f'<br><img src="{mdata["image"]}" width="200">
             """
 
         popup_html = f"""
@@ -255,8 +252,8 @@ elif st.session_state.page == "map":
             <b>⭐満足度:</b> {mdata.get('score','')}<br>
             <b>📝メモ:</b> {mdata.get('memo','')}
             {img_html}
-        </div>
-        """
+            </div>
+            """
 
         folium.Marker(
             [lat, lon],
@@ -303,37 +300,29 @@ elif st.session_state.page == "home":
         # 画像
         img_html = ""
         if m.get("image"):
-            img_html = f"""
-            <img src="{m['image']}"style="width:100%; border-radius:12px;">
-            """
+            img_html = f'<img src="{m['image']}"style="width:100%; border-radius:12px;">
 
         # カード
         st.markdown(
-        f"""
-        <div style="
-            background:#fff;
-            border-radius:14px;
-            margin:10px 0;
-            overflow:hidden;
-            box-shadow:0 2px 6px rgba(0,0,0,0.08);
-        ">
+            f"""
+            <div style="background:#fff; border-radius:14px; margin:10px 0; overflow:hidden; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
 
-        {img_html}
+                {img_html}
 
-        <div style="padding:10px 12px;">
-            <div style="font-weight:bold;">📍 {m['place']}</div>
-            <div style="font-size:13px; color:#666;">
-                🍽 {m['food']}　⭐ {m['score']}
-            </div>
-            <div style="font-size:13px; margin-top:4px;">
-                {m['memo']}
-            </div>
-        </div>
+                <div style="padding:10px 12px;">
+                    <div style="font-weight:bold;">📍 {m['place']}</div>
+                    <div style="font-size:13px; color:#666;">
+                        🍽 {m['food']}　⭐ {m['score']}
+                    </div>
+                    <div style="font-size:13px; margin-top:4px;">
+                        {m['memo']}
+                    </div>
+                </div>
 
-        </div>
-        """,
-        unsafe_allow_html=True
-        )
+                </div>
+                """,
+                unsafe_allow_html=True
+                )
 
         col1, col2 = st.columns([1, 4])
 
