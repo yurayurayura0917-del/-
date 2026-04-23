@@ -299,7 +299,7 @@ elif st.session_state.page == "home":
         # 画像
         img_html = ""
         if m.get("image"):
-            img_html = f'<img src="{m['image']}"style="width:100%; border-radius:12px;">
+            img_html = f"<img src='{m['image']}'style='width:100%; border-radius:12px;'>"
 
         # カード
         st.markdown(
