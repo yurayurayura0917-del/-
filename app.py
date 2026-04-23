@@ -251,6 +251,7 @@ elif st.session_state.page == "map":
         <b>📝メモ:</b> {mdata.get('memo','')}
         {img_html}
         </div>"""
+        st.markdown(popup_html, unsafe_allow_html=True)
 
         folium.Marker(
             [lat, lon],
