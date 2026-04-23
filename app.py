@@ -247,13 +247,13 @@ elif st.session_state.page == "map":
 
         popup_html = f"""
         <div style="width:220px">
-            <b>📍場所:</b> {mdata.get('place','')}<br>
-            <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
-            <b>⭐満足度:</b> {mdata.get('score','')}<br>
-            <b>📝メモ:</b> {mdata.get('memo','')}
-            {img_html}
-            </div>
-            """
+        <b>📍場所:</b> {mdata.get('place','')}<br>
+        <b>🍽食べたもの:</b> {mdata.get('food','')}<br>
+        <b>⭐満足度:</b> {mdata.get('score','')}<br>
+        <b>📝メモ:</b> {mdata.get('memo','')}
+        {img_html}
+        </div>
+        """
 
         folium.Marker(
             [lat, lon],
